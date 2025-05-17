@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>3D Statuette Shop - Videogiochi & Anime</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  /* Reset e base */
+  *, *::before, *::after {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    /* Sfondo a tema anime, immagine grande e visibile */
+    background: url('https://i.imgur.com/Eo6oI0M.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #3a2e2e;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+  }
+  /* Overlay leggero per migliorare leggibilità */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255 255 255 / 0.85);
+    pointer-events: none;
+    z-index: -1;
+  }
+  a {
+    color: #d97700;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover, a:focus {
+    color: #f59e0b;
+    outline: none;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    background-color: rgba(255 255 255 / 0.95);
+    backdrop-filter: saturate(180%) blur(10px);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    flex-wrap: wrap;
+  }
+  header h1 {
+    font-size: 2.4rem;
+    color: #d97700;
+    user-select: none;
+    text-shadow: 1px 1px 2px rgba(217, 119, 0, 0.4);
+  }
+  nav {
+    display: flex;
+    gap: 30px;
+    font-weight: 600;
+    flex-wrap: wrap;
+  }
+  nav a {
+    position: relative;
+    padding: 5px 0;
+    font-size: 1.1rem;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    background: #d97700;
+    left: 0;
+    bottom: -4px;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+  nav a:hover::after, nav a:focus::after {
+    width: 100%;
+  }
+  main {
+    flex-grow: 1;
+    max-width: 1200px;
+    margin: 80px auto 40px;
+    padding: 0 20px;
+  }
+  section {
+    margin-bottom: 80px;
+    background-color: rgba(255 255 255 / 0.95);
+    border-radius: 16px;
+    padding: 40px 40px 60px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+    user-select: none;
+  }
+  section h2 {
+    font-size: 2.8rem;
+    color: #b45309;
+    margin-bottom: 40px;
+    border-bottom: 4px solid #d97700;
+    padding-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 36px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(217, 119, 0, 0.18);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.4s cubic-bezier(.25,.8,.25,1), box-shadow 0.4s ease;
+    cursor: pointer;
+  }
+  .card:hover, .card:focus-within {
+    transform: translateY(-16px);
+    box-shadow: 0 18px 36px rgba(217, 119, 0, 0.35);
+  }
+  .card img {
+    width: 100%;
+    height: 280px;
+    object-fit: contain;
+    background: #fefefe;
+    transition: transform 0.5s ease;
+    border-bottom: 6px solid #d97700;
+    border-radius: 20px 20px 0 0;
+    filter: drop-shadow(0 6px 8px rgba(217,119,0,0.2));
+  }
+  .card:hover img, .card:focus-within img {
+    transform: scale(1.08);
+  }
+  .card-content {
+    padding: 26px 28px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .card-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 14px;
+    color: #c2410c;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .card-content p {
+    flex-grow: 1;
+    font-size: 1.1rem;
+    color: #5c3d00;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .price {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #d97700;
+    margin-bottom: 24px;
+    letter-spacing: 0.03em;
+  }
+  .btn-buy {
+    position: relative;
+    overflow: hidden;
+    background-color: #d97700;
+    border: none;
+    border-radius: 12px;
+    color: #fffaf0;
+    font-weight: 700;
+    padding: 16px 32px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    user-select: none;
+    transition: background-color 0.3s ease;
+    outline-offset: 3px;
+    outline: none;
+    box-shadow: 0 4px 10px rgba(217,119,0,0.4);
+  }
+  .btn-buy:hover, .btn-buy:focus {
+    background-color: #f59e0b;
+    outline: none;
+    box-shadow: 0 6px 18px rgba(245,158,11,0.6);
+  }
+  .btn-buy::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    top: 50%;
+    left: 50%;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.4);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.4s ease;
+    z-index: 1;
+  }
+  .btn-buy:active::after {
+    transform: translate(-50%, -50%) scale(1);
+    transition: 0s;
+  }
+  footer {
+    background-color: rgba(255 255 255 / 0.95);
+    padding: 30px 20px;
+    text-align: center;
+    color: #926d00;
+    font-size: 1rem;
+    user-select: none;
+    box-shadow: 0 -4px 14px rgba(217,119,0,0.1);
+  }
+  footer .socials {
+    margin-top: 18px;
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+  }
+  footer .socials a {
+    color: #d97700;
+    font-size: 1.6rem;
+    transition: color 0.3s ease;
+  }
+  footer .socials a:hover, footer .socials a:focus {
+    color: #f59e0b;
+    outline: none;
+  }
+  .about {
+    max-width: 700px;
+    margin: 0 auto 80px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #6b4f00;
+    line-height: 1.8;
+  }
+  @media (max-width: 620px) {
+    header h1 {
+      font-size: 2rem;
+    }
+    nav {
+      gap: 20px;
+      justify-content: center;
+    }
+    section h2 {
+      font-size: 2.4rem;
+    }
+    .card img {
+      height: 220px;
+    }
+  }
+</style>
+<!-- Icone social da fontawesome CDN -->
+<script src="https://kit.fontawesome.com/a81368914c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <h1>3D Statuette Shop</h1>
+    <nav>
+      <a href="#videogiochi" tabindex="0">Videogiochi</a>
+      <a href="#anime" tabindex="0">Anime</a>
+      <a href="#altro" tabindex="0">Altro</a>
+      <a href="#contatti" tabindex="0">Contatti</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="videogiochi">
+      <h2>Statuette Videogiochi</h2>
+      <div class="products-grid">
+        <article class="card" tabindex="0">
+          <img src="https://static.wikia.nocookie.net/nintendosmashbros/images/4/4a/Mario_SSBU.png" alt="Mario 3D" />
+          <div class="card-content">
+            <h3>Mario 3D</h3>
+            <p>Statuetta dettagliata di Mario in versione 3D, perfetta per i fan dei videogiochi classici.</p>
+            <div class="price">€45,00</div>
+            <button class="btn-buy">Compra ora</button>
+          </div>
+        </article>
+
+        <article class="card" tabindex="0">
+          <img src="https://static.wikia.nocookie.net/zelda_gamepedia_en/images/9/97/Link_SSBU.png" alt="Link Hyrule" />
+          <div class="card-content">
+            <h3>Link Hyrule</h3>
+            <p>Iconica statuetta di Link con scudo e spada, ideale per collezionisti e appassionati di Zelda.</p>
+            <div class="price">€50,00</div>
+            <button class="btn-buy">Compra ora</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="anime">
+      <h2>Statuette Anime</h2>
+      <div class="products-grid">
+        <article class="card" tabindex="0">
+          <img src="https://static.wikia.nocookie.net/dragonball/images/9/9c/Goku_Super_Saiyan_4.png" alt="Goku Super Saiyan" />
+          <div class="card-content">
+            <h3>Goku Super Saiyan</h3>
+            <p>Figura 3D di Goku in modalità Super Saiyan, dettagli eccezionali e colori vibranti.</p>
+            <div class="price">€60,00</div>
+            <button class="btn-buy">Compra ora</button>
+          </div>
+        </article>
